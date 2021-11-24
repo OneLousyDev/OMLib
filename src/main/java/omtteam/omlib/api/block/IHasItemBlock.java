@@ -1,7 +1,7 @@
 package omtteam.omlib.api.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 
 /**
  * Created by Keridos on 07/12/16.
@@ -14,5 +14,5 @@ public interface IHasItemBlock {
      *
      * @return the ItemBlock instance of the given block.
      */
-    ItemBlock getItemBlock(Block block);
+    BlockItem getItemBlock(Block block);
 }

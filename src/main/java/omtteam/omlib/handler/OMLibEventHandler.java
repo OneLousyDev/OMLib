@@ -6,12 +6,14 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -20,8 +22,8 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -72,8 +74,8 @@ public class OMLibEventHandler {
 
     @SubscribeEvent
     public void playerJoinEvent(EntityJoinWorldEvent event) {
-        if (!event.getWorld().isRemote && event.getEntity() instanceof EntityPlayerMP) {
-            OMLibNetworkingHandler.sendMessageToPlayer(new MessageSetSharePlayerList(OwnerShareRegister.instance), (EntityPlayerMP) event.getEntity());
+        if (!event.getWorld().isRemote && event.getEntity() instanceof ServerPlayerEntity) {
+            OMLibNetworkingHandler.sendMessageToPlayer(new MessageSetSharePlayerList(OwnerShareRegister.instance), (ServerPlayerEntity) event.getEntity());
         }
     }
 
@@ -93,7 +95,7 @@ public class OMLibEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void drawBlockOutline(DrawBlockHighlightEvent event) {
         if (event.getTarget() != null && event.getTarget().sideHit != null && event.getPlayer().getHeldItemMainhand() != ItemStack.EMPTY && event.getPlayer().getHeldItemMainhand().getItem() instanceof IDrawOutline) {
             BlockPos blockpos = event.getTarget().getBlockPos().offset(event.getTarget().sideHit);

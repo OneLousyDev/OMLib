@@ -1,9 +1,10 @@
 package omtteam.omlib.api.network;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import omtteam.omlib.handler.OMLibEventHandler;
 import omtteam.omlib.util.player.Player;
@@ -60,7 +61,7 @@ public class OMLibNetwork {
         int powerRequired = 0, powerToDeliver = 0;
 
         for (Map.Entry<BlockPos, INetworkTile> device : devices.entrySet()) {
-            if (world.isBlockLoaded(device.getKey()) && device.getValue() instanceof IPowerExchangeTile) {
+            if (world.isLoaded(device.getKey()) && device.getValue() instanceof IPowerExchangeTile) {
                 if (((IPowerExchangeTile) device.getValue()).deliversEnergy()) {
                     delivering.add((IPowerExchangeTile) device.getValue());
                 } else if (((IPowerExchangeTile) device.getValue()).requiresEnergy()) {
@@ -131,7 +132,7 @@ public class OMLibNetwork {
      */
     @Nullable
     public INetworkTile getConnectedDevice(BlockPos pos) {
-        return world.isBlockLoaded(pos) ? devices.get(pos) : null;
+        return world.isLoaded(pos) ? devices.get(pos) : null;
     }
 
     /**
@@ -177,12 +178,12 @@ public class OMLibNetwork {
         return tempmap.keySet().equals(devices.keySet());
     }
 
-    private void recursiveSearch(BlockPos pos, @Nullable EnumFacing from, HashMap<BlockPos, INetworkTile> tempmap) {
-        for (EnumFacing facing : EnumFacing.VALUES) {
-            TileEntity te = world.getTileEntity(pos.offset(facing));
+    private void recursiveSearch(BlockPos pos, @Nullable Direction from, HashMap<BlockPos, INetworkTile> tempmap) {
+        for (Direction facing : Direction.values()) {
+            TileEntity te = world.getBlockEntity(pos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ()));
             if (!facing.equals(from) && te instanceof INetworkTile & te != null) {
-                tempmap.put(pos.offset(facing), (INetworkTile) te);
-                recursiveSearch(pos.offset(facing), facing.getOpposite(), tempmap);
+                tempmap.put(pos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ()), (INetworkTile) te);
+                recursiveSearch(pos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ()), facing.getOpposite(), tempmap);
             }
         }
     }
@@ -205,15 +206,15 @@ public class OMLibNetwork {
         network.destroy();
     }
 
-    public NBTTagCompound getAsNBTTagCompound() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setUniqueId("uuid", this.uuid);
-        tag.setString("name", this.name);
+    public CompoundNBT getAsNBTTagCompound() {
+        CompoundNBT tag = new CompoundNBT();
+        tag.putUUID("uuid", this.uuid);
+        tag.putString("name", this.name);
         return tag;
     }
 
-    public UUID getUuidFromTagCompound(NBTTagCompound tag) {
-        return tag.getUniqueId("uuid");
+    public UUID getUuidFromTagCompound(CompoundNBT tag) {
+        return tag.getUUID("uuid");
     }
 
     private void destroy() {

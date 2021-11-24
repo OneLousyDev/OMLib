@@ -1,7 +1,7 @@
 package omtteam.omlib.network.messages;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -55,7 +55,7 @@ public class MessageOpenGUITile implements IMessage {
         @Override
         public IMessage onMessage(MessageOpenGUITile messageIn, MessageContext ctx) {
             final MessageOpenGUITile message = messageIn;
-            final EntityPlayerMP player = ctx.getServerHandler().player;
+            final ServerPlayerEntity player = ctx.getServerHandler().player;
             ctx.getServerHandler().player.getServerWorld().addScheduledTask(() -> {
                 World world = player.world;
                 TileEntity te = world.getTileEntity(new BlockPos(message.x, message.y, message.z));

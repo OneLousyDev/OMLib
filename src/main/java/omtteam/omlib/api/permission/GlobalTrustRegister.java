@@ -1,12 +1,7 @@
 package omtteam.omlib.api.permission;
 
-import net.minecraft.command.ICommandSender;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -14,7 +9,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import omtteam.omlib.OMLib;
 import omtteam.omlib.handler.OMConfig;
 import omtteam.omlib.network.OMLibNetworkingHandler;
@@ -152,11 +146,11 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
             trustedPlayer.setAccessLevel(accessMode);
             if (tpm.addTrustedPlayer(trustedPlayer)) {
                 if (sender != null) {
-                    sender.sendMessage(new TextComponentString("Added player " + sharePlayer.getName() + " to your global trust List!"));
+                    sender.sendMessage(new StringTextComponent("Added player " + sharePlayer.getName() + " to your global trust List!"));
                 }
             } else {
                 if (sender != null) {
-                    sender.sendMessage(new TextComponentString("Could not add " + sharePlayer.getName() + " to your global trust List!"));
+                    sender.sendMessage(new StringTextComponent("Could not add " + sharePlayer.getName() + " to your global trust List!"));
                 }
             }
             globalTrustList.put(owner, tpm);
@@ -164,11 +158,11 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
             if (entry.getValue().addTrustedPlayer(sharePlayer.getName())) {
                 entry.getValue().getTrustedPlayer(sharePlayer.getName()).setAccessLevel(accessMode);
                 if (sender != null) {
-                    sender.sendMessage(new TextComponentString("Added player " + sharePlayer.getName() + " to your global trust List!"));
+                    sender.sendMessage(new StringTextComponent("Added player " + sharePlayer.getName() + " to your global trust List!"));
                 }
             } else {
                 if (sender != null) {
-                    sender.sendMessage(new TextComponentString("Could not add " + sharePlayer.getName() + " to your global trust List!"));
+                    sender.sendMessage(new StringTextComponent("Could not add " + sharePlayer.getName() + " to your global trust List!"));
                 }
             }
         }
@@ -179,7 +173,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
         Map.Entry<Player, TrustedPlayersManager> entry = getEntry(owner);
         if (owner.equals(trustedPlayer)) {
             if (sender != null) {
-                sender.sendMessage(new TextComponentString("You cannot add/remove yourself to/from your Share List!"));
+                sender.sendMessage(new StringTextComponent("You cannot add/remove yourself to/from your Share List!"));
             }
             return;
         }
@@ -187,13 +181,13 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
             boolean result = entry.getValue().removeTrustedPlayer(trustedPlayer.getName());
             if (sender != null) {
                 if (result) {
-                    sender.sendMessage(new TextComponentString("Removed player " + trustedPlayer.getName() + " from your Share List!"));
+                    sender.sendMessage(new StringTextComponent("Removed player " + trustedPlayer.getName() + " from your Share List!"));
                 } else {
-                    sender.sendMessage(new TextComponentString("Could not remove player " + trustedPlayer.getName() + " from your Share List!"));
+                    sender.sendMessage(new StringTextComponent("Could not remove player " + trustedPlayer.getName() + " from your Share List!"));
                 }
             }
         } else if (sender != null) {
-            sender.sendMessage(new TextComponentString("Could not remove player " + trustedPlayer.getName() + " from your Share List!"));
+            sender.sendMessage(new StringTextComponent("Could not remove player " + trustedPlayer.getName() + " from your Share List!"));
         }
         OMLibNetworkingHandler.sendMessageToAllPlayers(new MessageSetGlobalTrustList(this));
     }
@@ -207,7 +201,7 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
                 playerList.append(trustedPlayer.getName()).append(" ");
             }
         }
-        sender.sendMessage(new TextComponentString("Players on your share list: " + playerList.toString()));
+        sender.sendMessage(new StringTextComponent("Players on your share list: " + playerList.toString()));
     }
 
     @Nullable

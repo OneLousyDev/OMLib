@@ -1,11 +1,12 @@
 package omtteam.omlib.util;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+
 import omtteam.omlib.util.world.Pos;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -21,7 +22,7 @@ public class MathUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static AxisAlignedBB rotateAABB(AxisAlignedBB box, EnumFacing facing) {
+    public static AxisAlignedBB rotateAABB(AxisAlignedBB box, Direction facing) {
         switch (facing) {
             case NORTH:
                 return new AxisAlignedBB(box.minX, box.minY, box.maxZ, box.maxX, box.maxY, box.minZ);
@@ -52,15 +53,15 @@ public class MathUtil {
                                  pos.getX() + range, pos.getY() + range, pos.getZ() + range);
     }
 
-    public static Vec3d getVectorFromYawPitch(float yaw, float pitch) {
+    public static Vector3d getVectorFromYawPitch(float yaw, float pitch) {
         float f = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
         float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
         float f2 = -MathHelper.cos(-pitch * 0.017453292F);
         float f3 = MathHelper.sin(-pitch * 0.017453292F);
-        return new Vec3d((double) (f1 * f2), (double) f3, (double) (f * f2)).normalize();
+        return new Vector3d((double) (f1 * f2), (double) f3, (double) (f * f2)).normalize();
     }
 
-    public static Vec3d getVelocityVectorFromYawPitch(float yaw, float pitch, float velocity) {
+    public static Vector3d getVelocityVectorFromYawPitch(float yaw, float pitch, float velocity) {
         return getVectorFromYawPitch(yaw, pitch).scale(velocity);
     }
 

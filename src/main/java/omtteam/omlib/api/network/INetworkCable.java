@@ -1,6 +1,6 @@
 package omtteam.omlib.api.network;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 /**
  * Created by Keridos on 30/08/17.
@@ -14,6 +14,6 @@ public interface INetworkCable extends INetworkTile {
      * @param side side to check connection state to
      * @return connection state.
      */
-    boolean shouldConnect(EnumFacing side);
+    boolean shouldConnect(Direction side);
 }
 

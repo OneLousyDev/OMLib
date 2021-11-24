@@ -1,7 +1,7 @@
 package omtteam.omlib.api.network;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import omtteam.omlib.handler.OMLibEventHandler;
@@ -50,10 +50,10 @@ public interface INetworkTile {
     @Nonnull
     BlockPos getPosition();
 
-    default void recursAddDevice(World world, OMLibNetwork network, BlockPos pos, @Nullable EnumFacing from) {
-        if (world.isBlockLoaded(pos)) {
-            for (EnumFacing facing : EnumFacing.VALUES) {
-                TileEntity te = world.getTileEntity(pos.offset(facing));
+    default void recursAddDevice(World world, OMLibNetwork network, BlockPos pos, @Nullable Direction from) {
+        if (world.isLoaded(pos)) {
+            for (Direction facing : Direction.values()) {
+                TileEntity te = world.getBlockEntity(pos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ()));
                 if (!facing.equals(from) && te instanceof INetworkTile & te != null) {
                     OMLibNetwork remoteNetwork = ((INetworkTile) te).getNetwork();
                     if (remoteNetwork != null && !remoteNetwork.getUuid().equals(network.getUuid())) {

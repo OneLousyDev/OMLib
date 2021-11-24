@@ -1,9 +1,10 @@
 package omtteam.omlib.util.player;
 
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.command.CommandSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.UsernameCache;
+
 import omtteam.omlib.api.permission.*;
 import omtteam.omlib.api.tile.IHasTrustManager;
 import omtteam.omlib.handler.OMConfig;
@@ -30,7 +31,7 @@ public class PlayerUtil {
     }
 
     @Nullable
-    public static TrustedPlayer getTrustedPlayer(EntityPlayer player, IHasOwner tile) {
+    public static TrustedPlayer getTrustedPlayer(PlayerEntity player, IHasOwner tile) {
         return getTrustedPlayer(new Player(player), tile);
     }
 
@@ -43,9 +44,9 @@ public class PlayerUtil {
     }
 
     @ParametersAreNullableByDefault
-    public static boolean isPlayerOP(EntityPlayer player) {
+    public static boolean isPlayerOP(PlayerEntity player) {
         if (player != null) {
-            return player.canUseCommand(4, "");
+            return player.hasPermissions(4);
         }
         return false;
     }
@@ -53,7 +54,7 @@ public class PlayerUtil {
     @ParametersAreNullableByDefault
     public static boolean isPlayerOP(Player player) {
         if (player != null) {
-            EntityPlayer entityPlayer = player.getEntityPlayer();
+            PlayerEntity entityPlayer = player.getEntityPlayer();
             return isPlayerOP(entityPlayer);
         }
         return false;
@@ -99,7 +100,7 @@ public class PlayerUtil {
      * @return the type of the players access to the block sorted by owner > trusted > op > none
      */
     @ParametersAreNonnullByDefault
-    public static EnumPlayerAccessType getPlayerAccessType(EntityPlayer entityPlayer, TileEntityOwnedBlock ownedBlock) {
+    public static EnumPlayerAccessType getPlayerAccessType(PlayerEntity entityPlayer, TileEntityOwnedBlock ownedBlock) {
         Player player = new Player(entityPlayer);
         return getPlayerAccessType(player, ownedBlock);
     }
@@ -130,7 +131,7 @@ public class PlayerUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerTrusted(EntityPlayer entityPlayer, IHasOwner ownedBlock) {
+    public static boolean isPlayerTrusted(PlayerEntity entityPlayer, IHasOwner ownedBlock) {
         Player player = new Player(entityPlayer);
         return isPlayerTrusted(player, ownedBlock);
     }
@@ -141,7 +142,7 @@ public class PlayerUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerOwner(EntityPlayer checkPlayer, IHasOwner ownedBlock) {
+    public static boolean isPlayerOwner(PlayerEntity checkPlayer, IHasOwner ownedBlock) {
         Player player = new Player(checkPlayer);
         return isPlayerOwner(player, ownedBlock);
     }
@@ -153,7 +154,7 @@ public class PlayerUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean isPlayerAdmin(EntityPlayer checkPlayer, IHasOwner machine) {
+    public static boolean isPlayerAdmin(PlayerEntity checkPlayer, IHasOwner machine) {
         Player player = new Player(checkPlayer);
         return isPlayerAdmin(player, machine);
     }
@@ -166,7 +167,7 @@ public class PlayerUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static boolean canPlayerChangeSetting(EntityPlayer checkPlayer, IHasOwner machine) {
+    public static boolean canPlayerChangeSetting(PlayerEntity checkPlayer, IHasOwner machine) {
         Player player = new Player(checkPlayer);
         return canPlayerChangeSetting(player, machine);
     }
@@ -180,7 +181,7 @@ public class PlayerUtil {
 
     // Use this for block access.
     @ParametersAreNonnullByDefault
-    public static boolean canPlayerAccessBlock(EntityPlayer entityPlayer, IHasOwner ownedBlock) {
+    public static boolean canPlayerAccessBlock(PlayerEntity entityPlayer, IHasOwner ownedBlock) {
         Player player = new Player(entityPlayer);
         return canPlayerAccessBlock(player, ownedBlock);
     }
@@ -196,16 +197,16 @@ public class PlayerUtil {
     }
 
     @ParametersAreNonnullByDefault
-    public static void addChatMessage(ICommandSender sender, ITextComponent component) {
-        if (sender instanceof EntityPlayer) {
-            ((EntityPlayer) sender).sendStatusMessage(component, false);
+    public static void addChatMessage(CommandSource sender, ITextComponent component) {
+        if (sender.getEntity() instanceof PlayerEntity) {
+            ((PlayerEntity) sender.getEntity()).sendMessage(component, null);
         } else {
-            sender.sendMessage(component);
+            sender.sendSuccess(component, false);
         }
     }
 
     @ParametersAreNonnullByDefault
-    public static EnumAccessLevel getPlayerAccessLevel(EntityPlayer player, IHasOwner ownedBlock) {
+    public static EnumAccessLevel getPlayerAccessLevel(PlayerEntity player, IHasOwner ownedBlock) {
         if (isPlayerOwner(player, ownedBlock)) {
             return EnumAccessLevel.ADMIN;
         }

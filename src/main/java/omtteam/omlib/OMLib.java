@@ -1,64 +1,45 @@
 package omtteam.omlib;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import omtteam.omlib.handler.OMGuiHandler;
-import omtteam.omlib.init.OMLibBlocks;
-import omtteam.omlib.proxy.CommonProxy;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import omtteam.omlib.handler.registry.CommandRegistry;
 import omtteam.omlib.reference.Reference;
-import omtteam.omlib.util.command.CommandChangeOwner;
-import omtteam.omlib.util.command.CommandShareOwner;
-import omtteam.omlib.util.command.CommandToggleDebug;
+
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static omtteam.omlib.compatibility.OMLibModCompatibility.checkForMods;
-import static omtteam.omlib.compatibility.OMLibModCompatibility.performModCompat;
+@Mod(Reference.MOD_ID)
+public class OMLib 
+{    
+	public static final Logger LOGGER = LogManager.getLogger();
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = "1.10.2", dependencies = Reference.DEPENDENCIES)
-public class OMLib {
-    @SuppressWarnings("unused")
-    @Mod.Instance(Reference.MOD_ID)
-    public static OMLib instance;
+    public OMLib()
+    {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
-    @SuppressWarnings("unused")
-    @SidedProxy(clientSide = "omtteam.omlib.proxy.ClientProxy", serverSide = "omtteam.omlib.proxy" + "" + ".CommonProxy")
-    public static CommonProxy proxy;
-
-    @SuppressWarnings("unused")
-    public static CreativeTabs modularTurretsTab;
-    private static Logger logger;
-
-    public static Logger getLogger() {
-        return logger;
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @SuppressWarnings("unused")
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        logger = event.getModLog();
-        OMLibBlocks.initTileEntities();
-        checkForMods();
-        proxy.preInit();
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, OMGuiHandler.getInstance());
+    private void setup(final FMLCommonSetupEvent event)
+    {
+    	
     }
 
-    @SuppressWarnings("unused")
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
-        performModCompat();
-        proxy.init();
+    private void doClientStuff(final FMLClientSetupEvent event)
+    {
+    	
     }
-
-    @SuppressWarnings("unused")
-    @Mod.EventHandler
-    public void serverStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandChangeOwner());
-        event.registerServerCommand(new CommandShareOwner());
-        event.registerServerCommand(new CommandToggleDebug());
+	
+    @SubscribeEvent
+    public static void serverStarting(RegisterCommandsEvent event) 
+    {
+        CommandRegistry.register(event.getDispatcher());
     }
 }

@@ -1,7 +1,7 @@
 package omtteam.omlib.util;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerEntityMP;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.handler.OMConfig;
@@ -14,7 +14,7 @@ import java.util.List;
 public class DebugHandler {
     private static DebugHandler instance;
     private List<IContainerListener> listeners;
-    private EntityPlayer player;
+    private PlayerEntity player;
 
     private DebugHandler() {
     }
@@ -26,11 +26,11 @@ public class DebugHandler {
         return instance;
     }
 
-    public EntityPlayer getPlayer() {
+    public PlayerEntity getPlayer() {
         return player;
     }
 
-    public void setPlayer(EntityPlayer player) {
+    public void setPlayer(PlayerEntity player) {
         this.player = player;
     }
 
@@ -48,8 +48,8 @@ public class DebugHandler {
         }
         if (this.listeners != null && OMConfig.GENERAL.doDebugChat) {
             for (IContainerListener listener : this.listeners) {
-                if (listener instanceof EntityPlayerMP && !((EntityPlayerMP) listener).getEntityWorld().isRemote) {
-                    ((EntityPlayerMP) listener).sendMessage(new TextComponentString(message));
+                if (listener instanceof PlayerEntityMP && !((PlayerEntityMP) listener).getEntityWorld().isRemote) {
+                    ((PlayerEntityMP) listener).sendMessage(new TextComponentString(message));
                 }
             }
         }

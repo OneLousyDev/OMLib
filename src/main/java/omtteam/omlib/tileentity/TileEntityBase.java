@@ -1,15 +1,15 @@
 package omtteam.omlib.tileentity;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -23,40 +23,40 @@ public abstract class TileEntityBase extends TileEntity {
     protected boolean updateNBT = false;
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        this.writeToNBT(nbtTagCompound);
-        return new SPacketUpdateTileEntity(this.pos, 2, nbtTagCompound);
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        CompoundNBT nbtTagCompound = new CompoundNBT();
+        this.save(nbtTagCompound);
+        return new SUpdateTileEntityPacket(this.getBlockPos(), 2, nbtTagCompound);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        this.readFromNBT(pkt.getNbtCompound());
-        IBlockState state = this.getWorld().getBlockState(pos);
-        this.getWorld().notifyBlockUpdate(pos, state, state, 3);
+    @OnlyIn(Dist.CLIENT)
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        this.readFromNBT(pkt.getTag());
+        BlockState state = this.level.getBlockState(getBlockPos());
+        this.getLevel().notifyBlockUpdate(pos, state, state, 3);
     }
 
     @Override
     @ParametersAreNonnullByDefault
-    public void handleUpdateTag(NBTTagCompound tag) {
+    public void handleUpdateTag(CompoundNBT tag) {
         super.handleUpdateTag(tag);
     }
 
     @Override
-    public NBTTagCompound getUpdateTag() {
-        return this.writeToNBT(super.getUpdateTag());
+    public CompoundNBT getUpdateTag() {
+        return this.save(super.getUpdateTag());
     }
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState) {
         return oldState.getBlock() != newState.getBlock();
     }
 
     public void markBlockForUpdate() {
-        IBlockState state = this.getWorld().getBlockState(this.getPos());
-        this.getWorld().markAndNotifyBlock(this.getPos(), null, state, state, 3);
+        BlockState state = this.level.getBlockState(this.getBlockPos());
+        this.level.markAndNotifyBlock(this.getBlockPos(), null, state, state, 3);
     }
 
     public void setUpdateNBT(boolean shouldUpdateNBT) {

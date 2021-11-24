@@ -1,25 +1,26 @@
 package omtteam.omlib.api.network;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.List;
 import java.util.ListIterator;
 
 public interface ISyncableTE extends ISyncable {
-    List<EntityPlayerMP> getSyncPlayerList();
+    List<ServerPlayerEntity> getSyncPlayerList();
 
     TileEntity getTE();
 
     void informUpdate();
 
     default void scrubSyncPlayerList() {
-        ListIterator<EntityPlayerMP> iter = getSyncPlayerList().listIterator();
+        ListIterator<ServerPlayerEntity> iter = getSyncPlayerList().listIterator();
         while (iter.hasNext()) {
-            EntityPlayerMP player = iter.next();
+            ServerPlayerEntity player = iter.next();
             TileEntity te = getTE();
-            if (player.isDead || player.world.provider.getDimension() != te.getWorld().provider.getDimension()
-                    || player.getDistance(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ()) > 25) {
+            if (player.isAlive() || player.level.dimension() != te.getLevel().dimension()
+                    || player.getHorizontalDistanceSqr(new Vector3d(te.getBlockPos().getX(), te.getBlockPos().getY(), te.getBlockPos().getZ())) > 25) {
                 iter.remove();
             }
         }

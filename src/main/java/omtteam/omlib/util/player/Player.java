@@ -1,11 +1,10 @@
 package omtteam.omlib.util.player;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import omtteam.omlib.handler.OMConfig;
 
@@ -33,9 +32,9 @@ public class Player {
         this.teamName = teamName;
     }
 
-    public Player(EntityPlayer player) {
-        this.uuid = player.getUniqueID();
-        this.name = player.getName();
+    public Player(PlayerEntity player) {
+        this.uuid = player.getUUID();
+        this.name = player.getName().toString();
         if (player.getTeam() != null) {
             this.teamName = player.getTeam().getName();
         }
@@ -60,11 +59,11 @@ public class Player {
                           tag.getString("team_name"));
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setString("name", this.name);
-        tag.setUniqueId("uuid", this.uuid);
+    public CompoundNBT writeToNBT(CompoundNBT tag) {
+        tag.putString("name", this.name);
+        tag.putUUID("uuid", this.uuid);
         if (!this.teamName.equalsIgnoreCase("")) {
-            tag.setString("team_name", this.teamName);
+            tag.putString("team_name", this.teamName);
         }
         return tag;
     }
@@ -102,7 +101,7 @@ public class Player {
     }
 
     @Nullable
-    public EntityPlayer getEntityPlayer() {
+    public PlayerEntity getEntityPlayer() {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         return server.getPlayerList().getPlayerByUUID(this.uuid);
     }

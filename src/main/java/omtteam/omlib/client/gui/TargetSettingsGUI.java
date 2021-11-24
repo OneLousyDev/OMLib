@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import omtteam.omlib.OMLib;
@@ -34,7 +34,7 @@ import static omtteam.omlib.util.player.PlayerUtil.isPlayerOwner;
 public class TargetSettingsGUI extends GuiScreen implements IHasTooltips, ISupportsBackSystem {
     protected final int xSize = 176;
     protected final int ySize = 205;
-    private final EntityPlayer player;
+    private final PlayerEntity player;
     private final IHasTargetingSettings targetHandler;
     private final ISyncableTE syncHandler;
     protected int guiLeft;

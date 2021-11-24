@@ -1,11 +1,13 @@
 package omtteam.omlib.blocks;
 
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -32,14 +34,14 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean hasTileEntity(IBlockState state) {
+    public boolean hasTileEntity(BlockState state) {
         return true;
     }
 
     @Override
     @Nonnull
     @ParametersAreNonnullByDefault
-    public abstract TileEntity createTileEntity(World world, IBlockState state);
+    public abstract TileEntity createTileEntity(World world, BlockState state);
 
     @Override
     @ParametersAreNonnullByDefault
@@ -72,9 +74,9 @@ public abstract class BlockAbstractTileEntity extends BlockAbstract {
                         float ry = rand.nextFloat() * 0.8F + 0.1F;
                         float rz = rand.nextFloat() * 0.8F + 0.1F;
 
-                        EntityItem entityItem = new EntityItem(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
+                        ItemEntity entityItem = new ItemEntity(worldIn, pos.getX() + rx, pos.getY() + ry, pos.getZ() + rz,
                                                                new ItemStack(item.getItem(), InvUtil.getStackSize(item),
-                                                                             item.getItemDamage()));
+                                                                             item.getMaxDamage()));
 
                         if (item.hasTagCompound()) {
                             entityItem.getItem().setTagCompound(item.getTagCompound().copy());
