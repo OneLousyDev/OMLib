@@ -3,6 +3,7 @@ package omtteam.omlib.blocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PaneBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -32,7 +33,7 @@ public abstract class BlockAbstractMiscPane extends PaneBlock {
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean canCreatureSpawn(BlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
+    public boolean canCreatureSpawn(BlockState state, IBlockAccess world, BlockPos pos, LivingEntity.SpawnPlacementType type) {
         return false;
     }
 }

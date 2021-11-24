@@ -1,7 +1,6 @@
 package omtteam.omlib.util.inventory;
 
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -65,14 +64,14 @@ public class InvUtil {
 
             while (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex) {
                 Slot slot1 = container.inventorySlots.get(i);
-                ItemStack itemstack1 = slot1.getStack();
+                ItemStack itemstack1 = slot1.getItem();
 
                 if (itemstack1.isEmpty() && slot1.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
                 {
                     if (stack.getCount() > slot1.getItemStackLimit(stack)) {
                         slot1.putStack(stack.splitStack(slot1.getItemStackLimit(stack)));
                     } else {
-                        slot1.putStack(stack.splitStack(stack.getCount()));
+                        slot1.putStack(stack.split(stack.getCount()));
                     }
 
                     slot1.onSlotChanged();

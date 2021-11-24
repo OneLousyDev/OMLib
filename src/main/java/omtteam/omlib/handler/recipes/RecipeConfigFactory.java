@@ -1,9 +1,6 @@
 package omtteam.omlib.handler.recipes;
 
 import com.google.gson.JsonObject;
-import net.minecraft.util.JsonUtils;
-import net.minecraftforge.common.crafting.IConditionFactory;
-import net.minecraftforge.common.crafting.JsonContext;
 import omtteam.omlib.compatibility.OMLibModCompatibility;
 import omtteam.omlib.handler.OMConfig;
 
