@@ -4,9 +4,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+
 import omtteam.omlib.reference.OMLibNames;
 
 import javax.annotation.Nullable;
@@ -25,12 +25,12 @@ public class GeneralUtil {
 
     // ---------------------------------------------------------------
     // Localization Methods
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static String safeLocalize(String text) {
-        return I18n.format(text);
+        return I18n..format(text);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static String safeLocalizeBlockName(String text) {
         if (text.contains(":")) {
             text = "tile." + text.split(":")[1] + ".name";
@@ -40,27 +40,27 @@ public class GeneralUtil {
         return I18n.format(text);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static String getBooleanLocalization(boolean bool) {
         String localization = getBooleanUnlocalization(bool);
         return I18n.format(localization);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static String getColoredBooleanLocalization(boolean bool) {
         String localization = getBooleanUnlocalization(bool);
 
         return getColoredBooleanColor(bool) + I18n.format(localization);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static String getColoredBooleanLocalizationYesNo(boolean bool) {
         String localization = getBooleanUnlocalizationYesNo(bool);
 
         return getColoredBooleanColor(bool) + I18n.format(localization);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static String getMachineModeLocalization(EnumMachineMode mode) {
         return I18n.format(getMachineModeUnlocalization(mode));
     }
@@ -94,7 +94,7 @@ public class GeneralUtil {
         return Float.parseFloat(input);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static String getShiftDetail() {
         return TextFormatting.GRAY + safeLocalize(OMLibNames.Localizations.GUI.SHIFT_DETAIL_START)
                 + " " + TextFormatting.YELLOW + TextFormatting.ITALIC + safeLocalize(OMLibNames.Localizations.GUI.SHIFT)

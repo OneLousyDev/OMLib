@@ -1,10 +1,10 @@
 package omtteam.omlib.util.world;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Created by Keridos on 31/01/17.
@@ -14,15 +14,15 @@ public class BlockUtil {
 
     // ---------------------------------------------------------------
     // Utility functions for Camo Blockstates
-    public static void writeBlockFromStateToNBT(NBTTagCompound nbtTagCompound, IBlockState state) {
+    public static void writeBlockFromStateToNBT(CompoundNBT nbtTagCompound, BlockState state) {
         if (state != null && state.getBlock().getRegistryName() != null) {
-            nbtTagCompound.setString("camoBlockRegName", state.getBlock().getRegistryName().toString());
-            nbtTagCompound.setInteger("camoBlockMeta", state.getBlock().getMetaFromState(state));
+            nbtTagCompound.putString("camoBlockRegName", state.getBlock().getRegistryName().toString());
+            nbtTagCompound.putInt("camoBlockMeta", state.getBlock().getMetaFromState(state));
         }
     }
 
-    public static IBlockState getBlockStateFromNBT(NBTTagCompound nbtTagCompound) {
-        if (nbtTagCompound.hasKey("camoBlockRegName") && nbtTagCompound.hasKey("camoBlockMeta")) {
+    public static BlockState getBlockStateFromNBT(CompoundNBT nbtTagCompound) {
+        if (nbtTagCompound.contains("camoBlockRegName") && nbtTagCompound.contains("camoBlockMeta")) {
             Block block = ForgeRegistries.BLOCKS.getValue(
                     new ResourceLocation(nbtTagCompound.getString("camoBlockRegName")));
             if (block != null) {

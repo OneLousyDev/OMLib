@@ -1,6 +1,6 @@
 package omtteam.omlib.items;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -10,5 +10,5 @@ import net.minecraft.world.World;
  * This Class
  */
 public interface IDrawOutline {
-    AxisAlignedBB getRenderOutline(EnumFacing facing, World world, BlockPos pos);
+    AxisAlignedBB getRenderOutline(Direction facing, World world, BlockPos pos);
 }

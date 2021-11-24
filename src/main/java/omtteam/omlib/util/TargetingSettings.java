@@ -1,8 +1,8 @@
 package omtteam.omlib.util;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.util.Objects;
+
+import net.minecraft.nbt.CompoundNBT;
 
 /**
  * Created by Keridos on 17/08/17.
@@ -27,33 +27,33 @@ public class TargetingSettings {
         this.maxRange = maxRange;
     }
 
-    public static TargetingSettings readFromNBT(NBTTagCompound nbtTagCompound) {
+    public static TargetingSettings readFromNBT(CompoundNBT nbtTagCompound) {
         TargetingSettings settings = new TargetingSettings();
-        if (nbtTagCompound.hasKey("targetingSettings")) {
-            NBTTagCompound nbt = nbtTagCompound.getCompoundTag("targetingSettings");
+        if (nbtTagCompound.contains("targetingSettings")) {
+            CompoundNBT nbt = nbtTagCompound.getCompound("targetingSettings");
             settings.targetPlayers = nbt.getBoolean("targetPlayers");
             settings.targetMobs = nbt.getBoolean("targetMobs");
             settings.targetPassive = nbt.getBoolean("targetPassive");
-            settings.range = nbt.getInteger("range");
-            settings.maxRange = nbt.getInteger("maxRange");
+            settings.range = nbt.getInt("range");
+            settings.maxRange = nbt.getInt("maxRange");
         } else {
             settings.targetPlayers = nbtTagCompound.getBoolean("attacksPlayers");
             settings.targetMobs = nbtTagCompound.getBoolean("attacksMobs");
             settings.targetPassive = nbtTagCompound.getBoolean("attacksNeutrals");
-            settings.range = nbtTagCompound.getInteger("currentMaxRange");
-            settings.maxRange = nbtTagCompound.getInteger("upperBoundMaxRange");
+            settings.range = nbtTagCompound.getInt("currentMaxRange");
+            settings.maxRange = nbtTagCompound.getInt("upperBoundMaxRange");
         }
         return settings;
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setBoolean("targetPlayers", this.targetPlayers);
-        nbt.setBoolean("targetMobs", this.targetMobs);
-        nbt.setBoolean("targetPassive", this.targetPassive);
-        nbt.setInteger("range", this.range);
-        nbt.setInteger("maxRange", this.maxRange);
-        nbtTagCompound.setTag("targetingSettings", nbt);
+    public CompoundNBT writeToNBT(CompoundNBT nbtTagCompound) {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putBoolean("targetPlayers", this.targetPlayers);
+        nbt.putBoolean("targetMobs", this.targetMobs);
+        nbt.putBoolean("targetPassive", this.targetPassive);
+        nbt.putInt("range", this.range);
+        nbt.putInt("maxRange", this.maxRange);
+        nbtTagCompound.put("targetingSettings", nbt);
         return nbtTagCompound;
     }
 

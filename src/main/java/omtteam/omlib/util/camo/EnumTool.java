@@ -33,9 +33,10 @@ public enum EnumTool implements IStringSerializable {
         }
     }
 
-    @Override
-    @Nonnull
-    public String getName() {
-        return this.name;
-    }
+	@Override
+	public String getSerializedName() {
+		return this.name;
+	}
+
+   
 }

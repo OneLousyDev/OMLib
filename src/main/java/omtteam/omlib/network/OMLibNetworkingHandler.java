@@ -1,10 +1,5 @@
 package omtteam.omlib.network;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
 import omtteam.omlib.network.messages.*;
 import omtteam.omlib.network.messages.render.MessageRenderRay;
 import omtteam.omlib.network.messages.render.MessageSpawnParticleQuad;

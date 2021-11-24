@@ -12,18 +12,12 @@ import omtteam.omlib.reference.Reference;
  */
 @SuppressWarnings("WeakerAccess")
 public class OMLibModCompatibility {
-    public static final String IC2ModId = "ic2";
-    public static final String TeslaModId = "tesla";
-    public static final String CoFHApiModId = "redstoneflux";
+    
     public static final String OCModID = "opencomputers";
     public static final String CCModID = "computercraft";
     public static final String MekModID = "mekanism";
-    public static final String TEModID = "thermalexpansion";
-    public static final String EIOModID = "enderio";
-    public static final String TCModID = "thaumcraft";
     public static final String TOPModID = "theoneprobe";
     public static final String WailaModID = "waila";
-    public static final String OMTCModID = "omtcontrol";
     public static final String OMTModID = "openmodularturrets";
     public static final String OMPDModID = "ompd";
     public static boolean IC2Loaded = false;

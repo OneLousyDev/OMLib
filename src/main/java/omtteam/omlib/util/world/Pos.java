@@ -19,9 +19,9 @@ public class Pos {
     }
 
     public Pos(Entity entity) {
-        this.x = entity.posX;
-        this.y = entity.posY;
-        this.z = entity.posZ;
+        this.x = entity.getX();
+        this.y = entity.getY();
+        this.z = entity.getZ();
     }
 
     public double getX() {
@@ -53,7 +53,7 @@ public class Pos {
     }
 
     public double distance(Entity entity) {
-        return Math.cbrt(Math.pow(x - entity.posX, 2) + Math.pow(y - entity.posY, 2) + Math.pow(z - entity.posZ, 2));
+        return Math.cbrt(Math.pow(x - entity.getX(), 2) + Math.pow(y - entity.getY(), 2) + Math.pow(z - entity.getZ(), 2));
     }
 
     public double distance(BlockPos pos) {

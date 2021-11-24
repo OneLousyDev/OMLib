@@ -1,5 +1,9 @@
 package omtteam.omlib.api.permission;
 
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
@@ -52,35 +56,35 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
     public static void preInit() {
         CapabilityManager.INSTANCE.register(IGlobalTrustRegister.class, new Capability.IStorage<IGlobalTrustRegister>() {
             @Override
-            public NBTBase writeNBT(Capability<IGlobalTrustRegister> capability, IGlobalTrustRegister instanceIn, EnumFacing side) {
+            public NBTBase writeNBT(Capability<IGlobalTrustRegister> capability, IGlobalTrustRegister instanceIn, Direction side) {
                 return instanceIn.serializeNBT();
             }
 
             @Override
-            public void readNBT(Capability<IGlobalTrustRegister> capability, IGlobalTrustRegister instanceIn, EnumFacing side, NBTBase nbt) {
+            public void readNBT(Capability<IGlobalTrustRegister> capability, IGlobalTrustRegister instanceIn, Direction side, NBTBase nbt) {
                 instanceIn.deserializeNBT(nbt);
             }
         }, () -> GlobalTrustRegister.instance);
     }
 
     @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing) {
         return capability == GLOBAL_TRUST_REGISTER;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     @Nullable
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
         return (T) (capability == GLOBAL_TRUST_REGISTER ? this : null);
     }
 
     @Override
     public NBTBase serializeNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        NBTTagList list = new NBTTagList();
+        CompoundNBT nbt = new CompoundNBT();
+        ListNBT list = new ListNBT();
         for (Map.Entry<Player, TrustedPlayersManager> entry : globalTrustList.entrySet()) {
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundNBT tag = new CompoundNBT();
             entry.getKey().writeToNBT(tag);
             entry.getValue().writeToNBT(tag);
             list.appendTag(tag);
@@ -90,12 +94,12 @@ public class GlobalTrustRegister implements ICapabilityProvider, IGlobalTrustReg
     }
 
     @Override
-    public void deserializeNBT(NBTBase nbtIn) {
-        if (nbtIn instanceof NBTTagCompound) {
-            NBTTagCompound nbt = (NBTTagCompound) nbtIn;
-            NBTTagList list = nbt.getTagList("list", nbt.getId());
-            for (int i = 0; i < list.tagCount(); i++) {
-                NBTTagCompound tag = list.getCompoundTagAt(i);
+    public void deserializeNBT(INBT nbtIn) {
+        if (nbtIn instanceof CompoundNBT) {
+            CompoundNBT nbt = (CompoundNBT) nbtIn;
+            ListNBT list = nbt.getList("list", nbt.getId());
+            for (int i = 0; i < list.size(); i++) {
+                CompoundNBT tag = list.getCompound(i);
                 Player owner = Player.readFromNBT(tag);
                 TrustedPlayersManager tpm = new TrustedPlayersManager(owner);
                 tpm.readFromNBT(tag);

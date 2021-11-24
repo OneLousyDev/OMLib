@@ -2,10 +2,10 @@ package omtteam.omlib.util;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.network.NetworkRegistry;
 
 public class NetworkUtil {
-    public static NetworkRegistry.TargetPoint getTargetPointFromTE(TileEntity te, double range) {
+    public static NetworkRegistry..TargetPoint getTargetPointFromTE(TileEntity te, double range) {
         return getTargetPointFromBlockPos(te.getWorld().provider.getDimension(), te.getPos(), range);
     }
 

@@ -1,29 +1,29 @@
 package omtteam.omlib.util.camo;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
-
 import static omtteam.omlib.util.world.BlockUtil.getBlockStateFromNBT;
 import static omtteam.omlib.util.world.BlockUtil.writeBlockFromStateToNBT;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
+
 public class CamoSettings {
-    protected IBlockState camoBlockState;
+    protected BlockState camoBlockState;
     protected int lightValue = 0;
     protected int lightOpacity = 15;
 
-    public static CamoSettings getSettingsFromNBT(NBTTagCompound tag) {
+    public static CamoSettings getSettingsFromNBT(CompoundNBT tag) {
         CamoSettings settings = new CamoSettings();
         settings.setCamoBlockState(getBlockStateFromNBT(tag));
-        settings.setLightValue(tag.getInteger("light_value"));
-        settings.setLightOpacity(tag.getInteger("light_opacity"));
+        settings.setLightValue(tag.getInt("light_value"));
+        settings.setLightOpacity(tag.getInt("light_opacity"));
         return settings;
     }
 
-    public IBlockState getCamoBlockState() {
+    public BlockState getCamoBlockState() {
         return camoBlockState;
     }
 
-    public void setCamoBlockState(IBlockState camoBlockState) {
+    public void setCamoBlockState(BlockState camoBlockState) {
         this.camoBlockState = camoBlockState;
     }
 
@@ -43,9 +43,9 @@ public class CamoSettings {
         this.lightOpacity = lightOpacity;
     }
 
-    public void writeNBT(NBTTagCompound tag) {
+    public void writeNBT(CompoundNBT tag) {
         writeBlockFromStateToNBT(tag, this.camoBlockState);
-        tag.setInteger("light_value", this.lightValue);
-        tag.setInteger("light_opacity", this.lightOpacity);
+        tag.putInt("light_value", this.lightValue);
+        tag.putInt("light_opacity", this.lightOpacity);
     }
 }
